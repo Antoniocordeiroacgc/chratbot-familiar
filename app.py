@@ -172,12 +172,32 @@ def limpar_texto_markdown(texto: str) -> str:
 # ============================================================
 # INTERFACE STREAMLIT
 # ============================================================
-st.set_page_config(page_title="Apoio Familiar", page_icon="💬")
+st.set_page_config(page_title="Apoio Familiar", page_icon="💬", layout="centered")
+
+with st.sidebar:
+    st.markdown("### 🆘 Precisa de ajuda urgente?")
+    st.markdown(
+        "- **CVV**: ligue **188** (24h, gratuito)\n"
+        "- **SAMU**: ligue **192**\n"
+        "- **Central da Mulher**: ligue **180**\n"
+        "- **Polícia**: ligue **190**"
+    )
+    st.divider()
+    st.markdown("### Sobre")
+    st.caption(
+        "Este assistente oferece apoio inicial em finanças familiares, "
+        "relacionamento, filhos e jogo compulsivo. Não substitui "
+        "acompanhamento psicológico profissional."
+    )
+
 st.title("💬 Chatbot de Apoio Familiar")
 st.caption(
     "Um apoio inicial para finanças familiares, relacionamento, filhos e jogo "
     "compulsivo. Não substitui acompanhamento profissional."
 )
+
+AVATAR_USUARIO = "🧑"
+AVATAR_ASSISTENTE = "💬"
 
 # Histórico de conversa por sessão (some ao fechar a aba/navegador)
 if "chat" not in st.session_state:
@@ -198,20 +218,21 @@ if "chat" not in st.session_state:
 
 # Reexibe o histórico já mostrado nesta sessão
 for autor, texto in st.session_state.mensagens_exibidas:
-    with st.chat_message(autor):
+    avatar = AVATAR_USUARIO if autor == "user" else AVATAR_ASSISTENTE
+    with st.chat_message(autor, avatar=avatar):
         st.markdown(texto)
 
 pergunta_usuario = st.chat_input("Digite sua mensagem...")
 
 if pergunta_usuario:
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar=AVATAR_USUARIO):
         st.markdown(pergunta_usuario)
     st.session_state.mensagens_exibidas.append(("user", pergunta_usuario))
 
     categoria, mensagem_crise = detectar_crise(pergunta_usuario.lower())
 
     if categoria:
-        with st.chat_message("assistant"):
+        with st.chat_message("assistant", avatar=AVATAR_ASSISTENTE):
             st.markdown(mensagem_crise)
         st.session_state.mensagens_exibidas.append(("assistant", mensagem_crise))
         if categoria == "suicidio":
@@ -226,7 +247,7 @@ if pergunta_usuario:
                 if not resposta.candidates or not resposta.candidates[0].content.parts:
                     raise ValueError("Resposta vazia ou bloqueada pelo modelo")
                 resposta_limpa = limpar_texto_markdown(resposta.text)
-            with st.chat_message("assistant"):
+            with st.chat_message("assistant", avatar=AVATAR_ASSISTENTE):
                 st.markdown(resposta_limpa)
             st.session_state.mensagens_exibidas.append(("assistant", resposta_limpa))
         except Exception as e:
@@ -240,7 +261,6 @@ Se quiser, tente reformular a pergunta de um jeito um pouco diferente. E lembre-
 conversar com um psicólogo pode fazer muita diferença para entender o que você
 está sentindo - isso não é algo que um chatbot consegue diagnosticar.
 """
-            with st.chat_message("assistant"):
+            with st.chat_message("assistant", avatar=AVATAR_ASSISTENTE):
                 st.markdown(fallback)
-                st.exception(e)
             st.session_state.mensagens_exibidas.append(("assistant", fallback))
