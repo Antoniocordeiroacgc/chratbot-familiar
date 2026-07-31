@@ -264,3 +264,35 @@ está sentindo - isso não é algo que um chatbot consegue diagnosticar.
             with st.chat_message("assistant", avatar=AVATAR_ASSISTENTE):
                 st.markdown(fallback)
             st.session_state.mensagens_exibidas.append(("assistant", fallback))
+
+# ============================================================
+# RODAPÉ FIXO
+# ============================================================
+st.markdown(
+    """
+    <style>
+        #MainMenu {visibility: hidden;}
+        [data-testid="stStatusWidget"] {visibility: hidden;}
+        [data-testid="stToolbar"] {visibility: hidden;}
+        [data-testid="stDecoration"] {display: none;}
+        footer {visibility: hidden;}
+        .rodape-fixo {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #F0F4F2;
+            color: #2C3E3A;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 12px;
+            z-index: 999;
+            border-top: 1px solid #d9e0dd;
+        }
+    </style>
+    <div class="rodape-fixo">
+        CRIAR.IA TECNOLOGIA - Todos os direitos reservados
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
