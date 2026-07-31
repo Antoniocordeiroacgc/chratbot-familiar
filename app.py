@@ -176,7 +176,6 @@ st.set_page_config(
     page_title="Apoio Familiar",
     page_icon="💬",
     layout="centered",
-    initial_sidebar_state="expanded",
 )
 
 with st.sidebar:
@@ -199,6 +198,26 @@ st.title("💬 Chatbot de Apoio Familiar")
 st.caption(
     "Um apoio inicial para finanças familiares, relacionamento, filhos e jogo "
     "compulsivo. Não substitui acompanhamento profissional."
+)
+
+# Banner de emergência sempre visível na tela principal - não depende da
+# barra lateral, que no celular abre e fecha sozinha (comportamento do Streamlit).
+st.markdown(
+    """
+    <div style="
+        background-color:#FDEDEC;
+        border-left:4px solid #C0392B;
+        padding:10px 14px;
+        border-radius:4px;
+        margin-bottom:16px;
+        font-size:14px;
+        color:#2C3E3A;">
+        🆘 <strong>Ajuda urgente:</strong> CVV <strong>188</strong> ·
+        SAMU <strong>192</strong> · Central da Mulher <strong>180</strong> ·
+        Polícia <strong>190</strong>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
 AVATAR_USUARIO = "🧑"
