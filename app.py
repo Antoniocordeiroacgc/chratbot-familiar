@@ -172,7 +172,12 @@ def limpar_texto_markdown(texto: str) -> str:
 # ============================================================
 # INTERFACE STREAMLIT
 # ============================================================
-st.set_page_config(page_title="Apoio Familiar", page_icon="💬", layout="centered")
+st.set_page_config(
+    page_title="Apoio Familiar",
+    page_icon="💬",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
 
 with st.sidebar:
     st.markdown("### 🆘 Precisa de ajuda urgente?")
@@ -275,6 +280,10 @@ st.markdown(
         [data-testid="stStatusWidget"] {visibility: hidden;}
         [data-testid="stToolbar"] {visibility: hidden;}
         [data-testid="stDecoration"] {display: none;}
+        [data-testid="collapsedControl"] {
+            visibility: visible !important;
+            display: flex !important;
+        }
         footer {visibility: hidden;}
         .rodape-fixo {
             position: fixed;
