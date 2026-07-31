@@ -200,22 +200,34 @@ st.caption(
     "compulsivo. Não substitui acompanhamento profissional."
 )
 
-# Banner de emergência sempre visível na tela principal - não depende da
-# barra lateral, que no celular abre e fecha sozinha (comportamento do Streamlit).
+# Banner de emergência FIXO no topo da tela - continua visível mesmo quando
+# a pessoa rola a conversa pra baixo, e não depende da barra lateral.
 st.markdown(
     """
-    <div style="
-        background-color:#FDEDEC;
-        border-left:4px solid #C0392B;
-        padding:10px 14px;
-        border-radius:4px;
-        margin-bottom:16px;
-        font-size:14px;
-        color:#2C3E3A;">
+    <style>
+        .banner-emergencia {
+            position: fixed;
+            top: 2.9rem;
+            left: 0;
+            width: 100%;
+            background-color: #FDEDEC;
+            border-bottom: 3px solid #C0392B;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: #2C3E3A;
+            text-align: center;
+            z-index: 998;
+        }
+        .espaco-banner {
+            height: 48px;
+        }
+    </style>
+    <div class="banner-emergencia">
         🆘 <strong>Ajuda urgente:</strong> CVV <strong>188</strong> ·
         SAMU <strong>192</strong> · Central da Mulher <strong>180</strong> ·
         Polícia <strong>190</strong>
     </div>
+    <div class="espaco-banner"></div>
     """,
     unsafe_allow_html=True,
 )
