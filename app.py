@@ -200,19 +200,15 @@ st.caption(
     "compulsivo. Não substitui acompanhamento profissional."
 )
 
-# Banner de emergência FIXO no topo da tela - continua visível mesmo quando
-# a pessoa rola a conversa pra baixo, e não depende da barra lateral.
+# Banner de emergência GRUDENTO no topo (sticky) - fica visível mesmo quando
+# a pessoa rola a conversa, sem depender de truques que quebram em alguns navegadores.
 st.markdown(
     """
     <style>
-        /* Remove o espaço vazio do cabeçalho padrão do Streamlit */
-        [data-testid="stHeader"] {
-            height: 0rem;
-        }
         .banner-emergencia {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
+            z-index: 998;
             width: 100%;
             background-color: #FDEDEC;
             border-bottom: 3px solid #C0392B;
@@ -220,17 +216,6 @@ st.markdown(
             font-size: 13px;
             color: #2C3E3A;
             text-align: center;
-            z-index: 998;
-        }
-        /* Mantém a seta de abrir a barra lateral visível, abaixo do banner */
-        [data-testid="collapsedControl"] {
-            position: fixed !important;
-            top: 3rem !important;
-            left: 0.5rem !important;
-            z-index: 1000 !important;
-        }
-        .espaco-banner {
-            height: 44px;
         }
     </style>
     <div class="banner-emergencia">
@@ -238,7 +223,6 @@ st.markdown(
         SAMU <strong>192</strong> · Central da Mulher <strong>180</strong> ·
         Polícia <strong>190</strong>
     </div>
-    <div class="espaco-banner"></div>
     """,
     unsafe_allow_html=True,
 )
