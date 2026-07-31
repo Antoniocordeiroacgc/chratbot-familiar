@@ -205,9 +205,13 @@ st.caption(
 st.markdown(
     """
     <style>
+        /* Remove o espaço vazio do cabeçalho padrão do Streamlit */
+        [data-testid="stHeader"] {
+            height: 0rem;
+        }
         .banner-emergencia {
             position: fixed;
-            top: 2.9rem;
+            top: 0;
             left: 0;
             width: 100%;
             background-color: #FDEDEC;
@@ -218,8 +222,15 @@ st.markdown(
             text-align: center;
             z-index: 998;
         }
+        /* Mantém a seta de abrir a barra lateral visível, abaixo do banner */
+        [data-testid="collapsedControl"] {
+            position: fixed !important;
+            top: 3rem !important;
+            left: 0.5rem !important;
+            z-index: 1000 !important;
+        }
         .espaco-banner {
-            height: 48px;
+            height: 44px;
         }
     </style>
     <div class="banner-emergencia">
