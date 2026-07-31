@@ -273,6 +273,9 @@ st.markdown(
     <style>
         #MainMenu {visibility: hidden;}
         [data-testid="stStatusWidget"] {visibility: hidden;}
+        [data-testid="stToolbar"] {visibility: hidden;}
+        [data-testid="stDecoration"] {display: none;}
+        footer {visibility: hidden;}
         .rodape-fixo {
             position: fixed;
             left: 0;
