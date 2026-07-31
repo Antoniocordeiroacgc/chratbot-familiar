@@ -271,6 +271,8 @@ está sentindo - isso não é algo que um chatbot consegue diagnosticar.
 st.markdown(
     """
     <style>
+        #MainMenu {visibility: hidden;}
+        [data-testid="stStatusWidget"] {visibility: hidden;}
         .rodape-fixo {
             position: fixed;
             left: 0;
