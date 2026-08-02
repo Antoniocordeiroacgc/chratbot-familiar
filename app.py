@@ -12,8 +12,57 @@ assistente social ou profissional de saúde) para:
 
 import os
 import re
+import uuid
+import requests
 import streamlit as st
+import streamlit.components.v1 as components
 import google.generativeai as genai
+
+# ============================================================
+# REGISTRO DE USO (Google Forms) - contagem confiável de
+# visitantes por dia e tempo de conversa, do lado do servidor.
+# Não depende do navegador da pessoa nem é afetado por bloqueadores.
+# ============================================================
+GOOGLE_FORM_URL = (
+    "https://docs.google.com/forms/d/e/"
+    "1FAIpQLScnJRILntb9VlF4XQGYbwRUHMBllExL9JoxcbJapw1v9kn73A/formResponse"
+)
+FORM_ENTRY_SESSAO = "entry.1816599340"
+
+
+def registrar_uso(session_id: str):
+    """Envia um registro silencioso para o Google Forms. Nunca interrompe
+    o app caso falhe (ex: sem internet, formulário indisponível)."""
+    try:
+        requests.post(
+            GOOGLE_FORM_URL,
+            data={FORM_ENTRY_SESSAO: session_id},
+            timeout=3,
+        )
+    except Exception:
+        pass
+
+# ============================================================
+# GOOGLE ANALYTICS (contagem de visitantes e tempo de uso)
+# ============================================================
+# O ID de mensuração NÃO é segredo (fica público em qualquer site que usa
+# Google Analytics), então não precisa ir no .env - pode ficar direto aqui.
+# Troque pelo ID que você copiou em analytics.google.com (formato G-XXXXXXXXXX)
+GA_MEASUREMENT_ID = "G-PNMM1PJLXR"
+
+if GA_MEASUREMENT_ID and GA_MEASUREMENT_ID != "G-XXXXXXXXXX":
+    components.html(
+        f"""
+        <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){{dataLayer.push(arguments);}}
+            gtag('js', new Date());
+            gtag('config', '{GA_MEASUREMENT_ID}');
+        </script>
+        """,
+        height=0,
+    )
 
 # ============================================================
 # CONFIGURAÇÃO DA CHAVE DE API
@@ -246,6 +295,9 @@ if "chat" not in st.session_state:
         ]
     )
     st.session_state.mensagens_exibidas = []
+    # Cada aba/navegador que abre o app ganha um ID único - registra 1 acesso
+    st.session_state.session_id = str(uuid.uuid4())[:8]
+    registrar_uso(st.session_state.session_id)
 
 # Reexibe o histórico já mostrado nesta sessão
 for autor, texto in st.session_state.mensagens_exibidas:
@@ -256,6 +308,7 @@ for autor, texto in st.session_state.mensagens_exibidas:
 pergunta_usuario = st.chat_input("Digite sua mensagem...")
 
 if pergunta_usuario:
+    registrar_uso(st.session_state.session_id)
     with st.chat_message("user", avatar=AVATAR_USUARIO):
         st.markdown(pergunta_usuario)
     st.session_state.mensagens_exibidas.append(("user", pergunta_usuario))
